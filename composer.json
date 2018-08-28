@@ -1,0 +1,36 @@
+{
+  "name": "zwei/kafka",
+  "type": "library",
+  "description": "",
+  "keywords": [
+    "阿里云kafka", "aliyun-kafka", "kafka"
+  ],
+  "license":"MIT",
+  "support": {
+    "issues": "https://github.com/qq1060656096/php-kafka/issues",
+    "source": "https://github.com/qq1060656096/php-kafka"
+  },
+  "authors": [
+    {
+      "name": "Zhao Wei Jie",
+      "email": "1060656096@qq.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Zwei\\Kafka\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Zwei\\Kafka\\Tests\\": "tests/"
+    }
+  },
+  "require": {
+    "zwei/composer-vendor-directory": "~1",
+    "illuminate/config":"5.0.*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": ">=5.4"
+  }
+}
