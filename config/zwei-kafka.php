@@ -9,7 +9,7 @@ return [
     ],
     // 消费者列表
     'client_list' => [
-        'consumer_client_id' => [// 消费者客户端id
+        'consumer_client_id' => [// 消费者group id
             'topic_list'    => [// 主题列表
                 "CID_alikafka-dhbpc",
             ],

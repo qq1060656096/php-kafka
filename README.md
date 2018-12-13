@@ -9,10 +9,19 @@ PHP Kafka
 开发文档
 =====
 
+|  类型     | 是否支持多集群   | 阿里云kafka |
+| -------  |:-------------: | --------    |
+| 消费者    | 不支持          | 支持        |
+| 多消费者  | 不支持          | 支持        |
+| 生产者    | 不支持          | 支持        |
+
+
+
+
 ----
-* **未撰写** [安装(Install)](docs/md/1.0-INSTALL.md)
-* **未撰写** [阿里云kafka连接](docs/md/2.0-INSTALL.md)
-* **未撰写** [阿里云kafka连接](docs/md/2.0-INSTALL.md)
+* **已撰稿** [介绍(Intro)](docs/md/0.0-INTRO.md)
+* **已撰写** [安装(Install)](docs/md/1.0-INSTALL.md)
+* **未撰写** [kafka消费者](docs/md/2.0-CONSUMER.md)
 
 
 ### 单元测试
