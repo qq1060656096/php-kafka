@@ -24,6 +24,8 @@ PHP Kafka
 * **未撰写** [kafka消费者](docs/md/2.0-CONSUMER.md)
 
 
+![Event Kafka流程图](docs/images/event-kafka.png)
+
 ### 单元测试
 ```sh
 phpunit --bootstrap ./tests/TestInit.php ./tests/
