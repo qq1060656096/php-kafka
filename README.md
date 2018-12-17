@@ -4,16 +4,16 @@ PHP Kafka
 介绍
 ----
 
-简单的kafka示例, 阿里云kafka示例, 你可以轻松使用示例和配置开发你的应用
+Event Kafka是一个基于事件消费的kafka消费者和生产者, 你可以轻松使用示例和配置开发你的应用
 
 开发文档
 =====
 
-|  类型     | 是否支持多集群   | 阿里云kafka |
-| -------  |:-------------: | --------    |
-| 消费者    | 不支持          | 支持        |
-| 多消费者  | 不支持          | 支持        |
-| 生产者    | 不支持          | 支持        |
+|  名称     | 多集群   | 跨集群转发事件 | 阿里云kafka | 同步 | 异步 |
+| -------  |:--------:| ------------| ----------- | --- | ---- |
+| 生产者    | 支持     |              | 支持        | 支持 | 支持 |
+| 消费者    | 支持     | 支持          | 支持       | 支持 | 支持  |
+
 
 
 
@@ -51,32 +51,3 @@ php AliyunSendAppEventProducer.php "10" "1"  "test_topic" "{}" "1"
 
 ```
 
-### 多消费者
-
-**分配分区**
-
-```sh
-# 消费者1
-php examples\AliyunAppEventConsumer.php "consumer_client_id_1"
-```
-
-```sh
-# 消费者2
-php examples\AliyunAppEventConsumer.php "consumer_client_id_1"
-```
-
-![分配分区](docs/images/assign-partition.png)
-
-**消费消息**
-
-```sh
-# 生产者1, 发送10次,间隔2秒,发送到test6主题,发送到1分区
-php examples\AliyunSendAppEventProducer.php "10" "2"  "test6" "{\"id\":1,\"eventKey\":\"EVENT_INIT\",\"name\":\"1111111111\"}" "1"
-```
-
-```sh
-# 生产者2, 发送10次,间隔2秒,发送到test6主题,发送到3分区
-php examples\AliyunSendAppEventProducer.php "10" "2"  "test6" "{\"id\":3,\"eventKey\":\"EVENT_INIT\",\"name\":\"8888\"}" "3"
-```
-
-![消费消息](docs/images/multi-consumer.png)
