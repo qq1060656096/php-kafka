@@ -6,7 +6,7 @@ require_once dirname(__DIR__).'/vendor/autoload.php';
  */
 
 $file       = \Zwei\ComposerVendorDirectory\ComposerVendor::getParentDir().'/config/test/aliyun-kafka.php';
-$config     = \Zwei\Kafka\Helper\Config::get($file);
+$config     = \Zwei\Kafka\Helper\CommonConfig::get($file);
 $obj        = new \Zwei\Kafka\AppEventConsumer();
 
 $clientId   = $argv[1];

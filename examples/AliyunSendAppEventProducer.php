@@ -7,7 +7,7 @@ print_r($argv);
  */
 
 $file           = \Zwei\ComposerVendorDirectory\ComposerVendor::getParentDir().'/config/test/aliyun-kafka.php';
-$config         = \Zwei\Kafka\Helper\Config::get($file);
+$config         = \Zwei\Kafka\Helper\CommonConfig::get($file);
 $several        = $argv[1];// 发送几次消息
 $interval       = $argv[2];// 间隔事件
 $topic          = $argv[3];// 主题

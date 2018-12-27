@@ -1,4 +1,4 @@
-PHP Kafka
+PHP Event Kafka
 =====
 
 介绍
@@ -26,9 +26,10 @@ Event Kafka是一个基于事件消费的kafka消费者和生产者, 你可以�
 
 ![Event Kafka流程图](docs/images/event-kafka.png)
 
+
 ### 单元测试
 ```sh
-phpunit --bootstrap ./tests/TestInit.php ./tests/
+php vendor/phpunit/phpunit/phpunit ./tests/
 
 phpunit --bootstrap ./tests/TestInit.php ./tests/Heplers/CommonHelperTest.php
 phpunit --bootstrap ./tests/TestInit.php ./tests/Events
