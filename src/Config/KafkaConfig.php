@@ -21,6 +21,11 @@ class KafkaConfig
     {
         $conf = new Conf();
         $conf = $this->setConf($conf, $options);
+//        $conf->setErrorCb(function ($kafka, $err, $reason) {
+//            printf("Kafka error: %s (reason: %s)\n", rd_kafka_err2str($err), $reason);
+//            var_dump($kafka, $err, $reason);
+//
+//        });
         return $conf;
     }
 

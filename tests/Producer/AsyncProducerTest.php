@@ -23,7 +23,7 @@ class AsyncProducerTest extends TestCase
 
     /**
      * 正常异步生产者
-     * @dataProvider getAsyncNormal
+     * @dataProvider getNormal
      * @param string $brokerList
      * @param array $topicList
      * @param array $options
@@ -34,7 +34,49 @@ class AsyncProducerTest extends TestCase
         $eventData = [
             'phpunit' => '20181227.141418',
         ];
+        $len = $obj->getProducer()->getOutQLen();
         $obj->sendEvent('PHPUNIT_ASYNC_TEST', $eventData, ['v0_t_normal_phpunit']);
+        $len2 = $obj->getProducer()->getOutQLen();
+        $this->assertTrue(true);
+        $this->assertTrue($len < $len2);
+
+    }
+
+    /**
+     * 测试异常kafa borker, 异步生产者
+     * @dataProvider getExceptionBrokerConnection
+     * @param string $brokerList
+     * @param array $topicList
+     * @param array $options
+     */
+    public function testExceptionBrokerSendMessage($brokerList, $topicList, $options)
+    {
+        $obj = new AsyncProducer($brokerList, $topicList, $options);
+        $eventData = [
+            'phpunit' => '20181227.224035',
+            'message' => '异常测试',
+            'method' => __METHOD__,
+        ];
+        $obj->sendEvent('PHPUNIT_ASYNC_EXCEPTION_TEST', $eventData, ['v0_t_normal_phpunit']);
+        $this->assertTrue(true);
+    }
+
+    /**
+     * 不存在的topic, 异步生产者
+     * @dataProvider getNoExistTopic
+     * @param string $brokerList
+     * @param array $topicList
+     * @param array $options
+     */
+    public function testNoExistTopicSendMessage($brokerList, $topicList, $options)
+    {
+        $obj = new AsyncProducer($brokerList, $topicList, $options);
+        $eventData = [
+            'phpunit' => '20181227.225035',
+            'message' => '异常测试',
+            'method' => __METHOD__,
+        ];
+        $obj->sendEvent('PHPUNIT_ASYNC_NO_EXIST_TOPIC_TEST', $eventData, ['v0_t_no_exist_topic_phpunit']);
         $this->assertTrue(true);
     }
 }

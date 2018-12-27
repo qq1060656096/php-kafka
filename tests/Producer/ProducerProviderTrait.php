@@ -22,7 +22,7 @@ trait ProducerProviderTrait
      * @throws \Zwei\Kafka\Exceptions\ClusterConfigException
      * @throws \Zwei\Kafka\Exceptions\ConfigException
      */
-    public function getAsyncNormal()
+    public function getNormal()
     {
 //        echo 123;exit;
         $lists = [
@@ -42,14 +42,33 @@ trait ProducerProviderTrait
      * @throws \Zwei\Kafka\Exceptions\ClusterConfigException
      * @throws \Zwei\Kafka\Exceptions\ConfigException
      */
-    public function getAsyncBrokerConnection()
+    public function getExceptionBrokerConnection()
     {
 //        echo 123;exit;
         $lists = [
             [
+                ClusterConfig::getValue('exception'),// 集群名
+                ProducerConfig::get()->get('v0_p_default_phpunit_async_exception.topics'),//生产者主题列表
+                ProducerConfig::get()->get('v0_p_default_phpunit_async_exception.options'),//生产者选项列表
+            ],
+        ];
+        return $lists;
+    }
+
+    /**
+     * 不存在的topic生产者数据提供者
+     *
+     * @return array
+     * @throws \Zwei\Kafka\Exceptions\ClusterConfigException
+     * @throws \Zwei\Kafka\Exceptions\ConfigException
+     */
+    public function getNoExistTopic()
+    {
+        $lists = [
+            [
                 ClusterConfig::getValue('normal'),// 集群名
-                ProducerConfig::get()->get('v0_p_default_phpunit_async_normal.topics'),//生产者主题列表
-                ProducerConfig::get()->get('v0_p_default_phpunit_async_normal.options'),//生产者选项列表
+                ProducerConfig::get()->get('v0_p_default_phpunit_async_no_exist_topic.topics'),//生产者主题列表
+                ProducerConfig::get()->get('v0_p_default_phpunit_async_no_exist_topic.options'),//生产者选项列表
             ],
         ];
         return $lists;
