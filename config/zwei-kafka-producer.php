@@ -27,7 +27,17 @@ return [
         'cluster'   => 'default',// 集群名: zwei-kafka-cluster.php中配置
         'class'     => \Zwei\Kafka\Producer\AsyncProducer::class,// 使用那种类型生产者发送消息: 异步生产者
         'topics'    => [// 主题列表
-            "test6",
+            "test",
+        ],
+        'options'   => [// kafka配置选项
+            "offset.store.method" => "broker",// offset保存在broker中
+        ],
+    ],
+    'v0_p_default2_common' => [// 生产者名(必须唯一): kafka正常集群2
+        'cluster'   => 'default2',// 集群名: zwei-kafka-cluster.php中配置
+        'class'     => \Zwei\Kafka\Producer\SyncProducer::class,// 使用那种类型生产者发送消息: 同步生产者
+        'topics'    => [// 主题列表
+            "v0_t_default_test2",
         ],
         'options'   => [// kafka配置选项
             "offset.store.method" => "broker",// offset保存在broker中

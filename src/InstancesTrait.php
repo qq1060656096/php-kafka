@@ -6,7 +6,7 @@
  * Time: 10:07
  */
 
-namespace Zwei\Kafka\Events;
+namespace Zwei\Kafka;
 
 /**
  * Trait InstancesTrait

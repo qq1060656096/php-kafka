@@ -5,10 +5,11 @@
  * Date: 2018-12-26
  * Time: 23:14
  */
-namespace Zwei\Kafka\Events;
+namespace Zwei\Kafka;
 
 
 use Zwei\Kafka\Config\ProducerConfig;
+use Zwei\Kafka\InstancesTrait;
 use Zwei\Kafka\Producer;
 use Zwei\Kafka\Producer\ProducerAbstract;
 

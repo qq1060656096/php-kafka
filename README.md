@@ -27,28 +27,33 @@ Event Kafka是一个基于事件消费的kafka消费者和生产者, 你可以�
 ![Event Kafka流程图](docs/images/event-kafka.png)
 
 
+### 使用示例
+
+```php
+<?php
+
+# 生产者示例
+// 用户注册
+$eventData = [
+    'user'  => 'phpunit.20181227.235950',
+    'pass'  => '123456',
+    'qq'    => '1060656096',
+    'email' => '1060656096@qq.com',
+];
+\Zwei\Kafka\Event::getProducer('v0_p_default_common_user_register')->sendEvent('USER_REGISTER', $eventData, ['test']);
+\Zwei\Kafka\Event::getProducer("生产者名")->sendEvent("事件名", ["事件数据"], ["主题名"]);
+
+
+```
+
 ### 单元测试
 ```sh
 php vendor/phpunit/phpunit/phpunit ./tests/
-
-phpunit --bootstrap ./tests/TestInit.php ./tests/Heplers/CommonHelperTest.php
-phpunit --bootstrap ./tests/TestInit.php ./tests/Events
 ```
 
 ### 常用命令示例
 
 ```sh
-# 消费者示例
-php AliyunAppEventConsumer 消费者客户端id
-php examples\AliyunAppEventConsumer.php "consumer_client_id_1"
-
-# 生产者示例
-php AliyunSendAppEventProducer.php 发送次数 间隔时间  主题名 事件json字符串 分区[默认自动分区]
-# 发送10次,每次间隔1秒,发送到"test_topic"主题, 事件内容是 "{}", 发送到默认自动分区
-php AliyunSendAppEventProducer.php "10" "1"  "test_topic" "{}"
-
-# 发送10次,每次间隔1秒,发送到"test_topic"主题, 事件内容是 "{}", 发送到1分区
-php AliyunSendAppEventProducer.php "10" "1"  "test_topic" "{}" "1"
 
 ```
 

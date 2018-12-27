@@ -49,11 +49,12 @@ class Producer extends CommonBaseAbstract
      */
     public function getSingleInstanceConfigKey($name, $key)
     {
-        if (!isset($this->config[$name])) {
+        $currentConfig = $this->getSingleInstanceConfig($name);
+        if (!isset($currentConfig[$key])) {
             $exceptionMsg = sprintf("% producer not config key %", $name, $key);
             throw new ProducerConfigException($exceptionMsg);
         }
-        return $this->config[$name];
+        return $currentConfig[$key];
     }
 
     /**
