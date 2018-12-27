@@ -35,12 +35,12 @@ Event Kafka是一个基于事件消费的kafka消费者和生产者, 你可以�
 # 生产者示例
 // 用户注册
 $eventData = [
-    'user'  => 'phpunit.20181227.235950',
-    'pass'  => '123456',
-    'qq'    => '1060656096',
-    'email' => '1060656096@qq.com',
+    "user"  => "phpunit.20181227.235950",
+    "pass"  => "123456",
+    "qq"    => "1060656096",
+    "email" => "1060656096@qq.com",
 ];
-\Zwei\Kafka\Event::getProducer('v0_p_default_common_user_register')->sendEvent('USER_REGISTER', $eventData, ['test']);
+\Zwei\Kafka\Event::getProducer("v0_p_default_common_user_register")->sendEvent("USER_REGISTER", $eventData, ["test"]);
 \Zwei\Kafka\Event::getProducer("生产者名")->sendEvent("事件名", ["事件数据"], ["主题名"]);
 
 
