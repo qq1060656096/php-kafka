@@ -32,10 +32,11 @@ class AsyncProducerTest extends TestCase
     {
         $obj = new AsyncProducer($brokerList, $topicList, $options);
         $eventData = [
-            'phpunit' => '20181227.141418',
+            'phpunit' => '20181227.233018',
         ];
         $len = $obj->getProducer()->getOutQLen();
         $obj->sendEvent('PHPUNIT_ASYNC_TEST', $eventData, ['v0_t_normal_phpunit']);
+
         $len2 = $obj->getProducer()->getOutQLen();
         $this->assertTrue(true);
         $this->assertTrue($len < $len2);
@@ -51,9 +52,12 @@ class AsyncProducerTest extends TestCase
      */
     public function testExceptionBrokerSendMessage($brokerList, $topicList, $options)
     {
+        $this->markTestSkipped(
+            '跳过测试: skip test'.__METHOD__
+        );
         $obj = new AsyncProducer($brokerList, $topicList, $options);
         $eventData = [
-            'phpunit' => '20181227.224035',
+            'phpunit' => '20181227.233118',
             'message' => '异常测试',
             'method' => __METHOD__,
         ];
@@ -72,7 +76,7 @@ class AsyncProducerTest extends TestCase
     {
         $obj = new AsyncProducer($brokerList, $topicList, $options);
         $eventData = [
-            'phpunit' => '20181227.225035',
+            'phpunit' => '20181227.233218',
             'message' => '异常测试',
             'method' => __METHOD__,
         ];
