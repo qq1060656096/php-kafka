@@ -19,7 +19,7 @@ use Zwei\Kafka\Exceptions\ClusterConfigException;
 class ClusterConfig
 {
     /**
-     *
+     * 获取配置
      * @return \Illuminate\Config\Repository
      * @throws \Zwei\Kafka\Exceptions\ConfigException
      */

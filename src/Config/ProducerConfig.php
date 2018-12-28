@@ -20,6 +20,8 @@ class ProducerConfig
 {
 
     /**
+     * 获取配置
+     *
      * @return \Illuminate\Config\Repository
      * @throws \Zwei\Kafka\Exceptions\ConfigException
      */

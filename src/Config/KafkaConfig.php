@@ -21,11 +21,28 @@ class KafkaConfig
     {
         $conf = new Conf();
         $conf = $this->setConf($conf, $options);
-//        $conf->setErrorCb(function ($kafka, $err, $reason) {
-//            printf("Kafka error: %s (reason: %s)\n", rd_kafka_err2str($err), $reason);
-//            var_dump($kafka, $err, $reason);
-//
-//        });
+        $conf->setErrorCb(function ($kafka, $err, $reason) {
+            printf("Kafka error: %s (reason: %s)\n", rd_kafka_err2str($err), $reason);
+            var_dump($kafka, $err, $reason);
+exit;
+        });
+        $conf->setErrorCb(function ($kafka, $err, $reason) {
+            printf("Kafka error: %s (reason: %s)\n", rd_kafka_err2str($err), $reason);
+            var_dump($kafka, $err, $reason);
+            exit;
+        });
+
+        $conf->setDrMsgCb(function ($kafka, $message) {
+            if ($message->err) {
+                // message permanently failed to be delivered
+                print_r($kafka);
+                print_r($message);
+            } else {
+                // message successfully delivered
+            }
+
+
+        });
         return $conf;
     }
 

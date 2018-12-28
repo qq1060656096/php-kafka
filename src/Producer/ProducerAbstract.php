@@ -41,6 +41,13 @@ class ProducerAbstract implements ProducerInsterface
     protected $conf = null;
 
     /**
+     * 生产者名
+     *
+     * @var string|null
+     */
+    protected $producerName = null;
+
+    /**
      * 生产者
      * @var Producer
      */
@@ -57,12 +64,14 @@ class ProducerAbstract implements ProducerInsterface
      * 构造方法初始化
      *
      * ProducerHelper constructor.
+     * @param string $producerName 生产者名
      * @param string $brokerList kafka broker列表
      * @param array $topicList 生成者 kafka 主题列表
      * @param array $options kafka 配置选项
      */
-    public function __construct($brokerList, $topicList, array $options = [])
+    public function __construct($producerName, $brokerList, $topicList, array $options = [])
     {
+        $this->producerName = $producerName;
         $this->brokerList   = $brokerList;
         $kafkaConfig        = new KafkaConfig($options);
         $this->conf         = $kafkaConfig->getNewConf();
@@ -136,7 +145,7 @@ class ProducerAbstract implements ProducerInsterface
     /**
      * 发送单个kafka消息
      * @param array $topicList 主题名列表
-     * @param string $message 消息
+     * @param array | string $message 消息
      * @param string|null $key 消息key
      * @param integer $partition 分区: 消息发送到那个分区
      * @param int $msgflags 必须是0
@@ -147,6 +156,13 @@ class ProducerAbstract implements ProducerInsterface
         // 1. 检测发送消息的topic列表是否合法
 //        $this->checkTopicList($topicList);
         foreach ($topicList as $key => $topic) {
+            if (is_array($message)) {
+                $message['additional']['producers'][] = [
+                    'producer'  => $this->producerName,
+                    'topic'     => $topic,
+                ];
+                $message = json_encode($message);
+            }
             $this->geProducerTopic($topic)->produce($partition, $msgflags, $message, $key);
         }
     }
@@ -173,9 +189,9 @@ class ProducerAbstract implements ProducerInsterface
             'data'      => $eventData,
             'time'      => time(),
             'ip'        => $ip,
+            'additional' => [],
         ];
-        $message  = json_encode($event);
-        $this->sendMessage($topicList, $message, $key, $partition, $msgflags);
+        $this->sendMessage($topicList, $event, $key, $partition, $msgflags);
     }
 
     /**

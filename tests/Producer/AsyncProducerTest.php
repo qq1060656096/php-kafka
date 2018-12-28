@@ -24,18 +24,20 @@ class AsyncProducerTest extends TestCase
     /**
      * 正常异步生产者
      * @dataProvider getNormal
-     * @param string $brokerList
-     * @param array $topicList
-     * @param array $options
+     * @param string $producerName 生产者名
+     * @param string $brokerList 生产者所在集群 broker列表
+     * @param array $topicList 生产者主题列表
+     * @param array $options 生产者选项
+     * @throws \Zwei\Kafka\Exceptions\ProducerConfigException
      */
-    public function testNomalSendMessage($brokerList, $topicList, $options)
+    public function testNormalSendMessage($producerName, $brokerList, $topicList, $options)
     {
-        $obj = new AsyncProducer($brokerList, $topicList, $options);
+        $obj = new AsyncProducer($producerName, $brokerList, $topicList, $options);
         $eventData = [
             'phpunit' => '20181227.233018',
         ];
         $len = $obj->getProducer()->getOutQLen();
-        $obj->sendEvent('PHPUNIT_ASYNC_TEST', $eventData, ['v0_t_normal_phpunit']);
+        $obj->sendEvent('PHPUNIT_ASYNC_TEST', $eventData, ['v0_t_docker_test']);
 
         $len2 = $obj->getProducer()->getOutQLen();
         $this->assertTrue(true);
@@ -44,43 +46,47 @@ class AsyncProducerTest extends TestCase
     }
 
     /**
-     * 测试异常kafa borker, 异步生产者
-     * @dataProvider getExceptionBrokerConnection
-     * @param string $brokerList
-     * @param array $topicList
-     * @param array $options
+     * 不存在的topic, 异步生产者
+     * @dataProvider getNoExistTopic
+     * @param string $producerName 生产者名
+     * @param string $brokerList 生产者所在集群 broker列表
+     * @param array $topicList 生产者主题列表
+     * @param array $options 生产者选项
+     * @throws \Zwei\Kafka\Exceptions\ProducerConfigException
      */
-    public function testExceptionBrokerSendMessage($brokerList, $topicList, $options)
+    public function testNoExistTopicSendMessage($producerName, $brokerList, $topicList, $options)
     {
-        $this->markTestSkipped(
-            '跳过测试: skip test'.__METHOD__
-        );
-        $obj = new AsyncProducer($brokerList, $topicList, $options);
+        $obj = new AsyncProducer($producerName, $brokerList, $topicList, $options);
         $eventData = [
-            'phpunit' => '20181227.233118',
-            'message' => '异常测试',
+            'phpunit' => '20181227.233218',
+            'message' => 'not exist topic phpunit',
             'method' => __METHOD__,
         ];
-        $obj->sendEvent('PHPUNIT_ASYNC_EXCEPTION_TEST', $eventData, ['v0_t_normal_phpunit']);
+        $obj->sendEvent('PHPUNIT_ASYNC_NO_EXIST_TOPIC_TEST', $eventData, ['v0_t_docker_no_exist_topic']);
         $this->assertTrue(true);
     }
 
     /**
-     * 不存在的topic, 异步生产者
-     * @dataProvider getNoExistTopic
-     * @param string $brokerList
-     * @param array $topicList
-     * @param array $options
+     * 测试异常kafa borker, 异步生产者
+     * @dataProvider getExceptionBrokerConnection
+     * @param string $producerName 生产者名
+     * @param string $brokerList 生产者所在集群 broker列表
+     * @param array $topicList 生产者主题列表
+     * @param array $options 生产者选项
+     * @throws \Zwei\Kafka\Exceptions\ProducerConfigException
      */
-    public function testNoExistTopicSendMessage($brokerList, $topicList, $options)
+    public function testExceptionBrokerSendMessage($producerName, $brokerList, $topicList, $options)
     {
-        $obj = new AsyncProducer($brokerList, $topicList, $options);
+        $this->markTestSkipped(
+            '跳过测试: skip test'.__METHOD__
+        );
+        $obj = new AsyncProducer($producerName, $brokerList, $topicList, $options);
         $eventData = [
-            'phpunit' => '20181227.233218',
-            'message' => '异常测试',
+            'phpunit' => '20181227.233118',
+            'message' => 'exception broker phpunit',
             'method' => __METHOD__,
         ];
-        $obj->sendEvent('PHPUNIT_ASYNC_NO_EXIST_TOPIC_TEST', $eventData, ['v0_t_no_exist_topic_phpunit']);
+        $obj->sendEvent('PHPUNIT_ASYNC_EXCEPTION_TEST', $eventData, ['v0_t_exception_broker_topic']);
         $this->assertTrue(true);
     }
 }

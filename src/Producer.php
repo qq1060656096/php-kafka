@@ -72,7 +72,7 @@ class Producer extends CommonBaseAbstract
         $options        = $this->getSingleInstanceConfigKey($name, self::CONFIG_KEY_OPTIONS);
         $brokLists      = ClusterConfig::getValue($cluster);
         /* @var $class ProducerAbstract */
-        return new $class($brokLists, $topics, $options);
+        return new $class($name, $brokLists, $topics, $options);
     }
 
     /**
@@ -80,6 +80,7 @@ class Producer extends CommonBaseAbstract
      * @param string $name
      * @return ProducerAbstract
      * @throws ProducerConfigException
+     * @throws ConfigException
      */
     public function getInstance($name)
     {

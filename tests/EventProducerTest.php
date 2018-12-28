@@ -16,21 +16,43 @@ use Zwei\Kafka\Event;
  */
 class EventProducerTest extends TestCase
 {
-    public function testAsyncSendEvent()
+    /**
+     * 测试同步生产者
+     * @throws \Zwei\Kafka\Exceptions\ConfigException
+     * @throws \Zwei\Kafka\Exceptions\ProducerConfigException
+     */
+    public function testSyncSendEvent()
     {
         // 用户注册
         $eventData = [
+            'producerType' => 'sync',
             'user'  => 'phpunit.20181227.235950',
             'pass'  => '123456',
             'qq'    => '1060656096',
             'email' => '1060656096@qq.com',
         ];
-        Event::getProducer('v0_p_default_common_user_register')
-            ->sendEvent('COMMON_USER_REGISTER', $eventData, ['test']);
+        Event::getProducer('v0_p_docker_sync_common_user')
+            ->sendEvent('EVENT_PRODUCER_SYNC_COMMON_USER_REGISTER', $eventData, ['v0_t_docker_test']);
+        $this->assertTrue(true);
+    }
 
-
-        Event::getProducer('v0_p_default2_common')
-            ->sendEvent('COMMON_USER_REGISTER2', $eventData, ['v0_t_default_test2']);
+    /**
+     * 测试异步生产者
+     * @throws \Zwei\Kafka\Exceptions\ConfigException
+     * @throws \Zwei\Kafka\Exceptions\ProducerConfigException
+     */
+    public function testAsyncSendEvent()
+    {
+        // 用户注册
+        $eventData = [
+            'producerType' => 'async',
+            'user'  => 'phpunit.20181227.235950',
+            'pass'  => '123456',
+            'qq'    => '1060656096',
+            'email' => '1060656096@qq.com',
+        ];
+        Event::getProducer('v0_p_docker_async_common_user')
+            ->sendEvent('EVENT_PRODUCER_ASYNC_COMMON_USER_REGISTER', $eventData, ['v0_t_docker_test']);
         $this->assertTrue(true);
     }
 }

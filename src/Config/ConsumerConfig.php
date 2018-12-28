@@ -18,6 +18,12 @@ namespace Zwei\Kafka\Config;
  */
 class ConsumerConfig
 {
+    /**
+     * 获取配置
+     *
+     * @return \Illuminate\Config\Repository
+     * @throws \Zwei\Kafka\Exceptions\ConfigException
+     */
     public static function get()
     {
         return CommonConfig::getCache('consumer', 'zwei-kafka-consumer.php');
