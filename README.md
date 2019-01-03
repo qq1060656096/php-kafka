@@ -40,7 +40,7 @@ $eventData = [
     "qq"    => "1060656096",
     "email" => "1060656096@qq.com",
 ];
-\Zwei\Kafka\Event::getProducer("v0_p_default_common_user_register")->sendEvent("USER_REGISTER", $eventData, ["test"]);
+\Zwei\Kafka\Event::getProducer("v0_p_docker_common_user")->sendEvent("USER_REGISTER", $eventData, ["test"]);
 \Zwei\Kafka\Event::getProducer("生产者名")->sendEvent("事件名", ["事件数据"], ["主题名"]);
 
 
