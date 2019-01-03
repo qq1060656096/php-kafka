@@ -6,13 +6,16 @@
  * Time: 19:15
  */
 
-namespace Zwei\Kafka\Consume\BroadCast;
+namespace Zwei\Kafka\Consumer\BroadCast;
 
 
-use Zwei\Kafka\Consumer\BroadCastAbstract;
 use Zwei\Kafka\Event\EventHelper;
 use Zwei\Kafka\Exceptions\Config\BroadCastConfigException;
 
+/**
+ * Class OriginBroadCast
+ * @package Zwei\Kafka\Consumer\BroadCast
+ */
 class OriginBroadCast extends BroadCastAbstract
 {
     /**

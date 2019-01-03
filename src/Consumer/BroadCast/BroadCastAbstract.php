@@ -6,7 +6,7 @@
  * Time: 21:41
  */
 
-namespace Zwei\Kafka\Consumer;
+namespace Zwei\Kafka\Consumer\BroadCast;
 
 
 use Zwei\Kafka\Event;
@@ -17,7 +17,7 @@ use Zwei\Kafka\Exceptions\Config\BroadCastConfigException;
  * 广播抽象类
  *
  * Class BroadCastAbstract
- * @package Zwei\Kafka\Consumer
+ * @package Zwei\Kafka\Consumer\BroadCast
  */
 abstract class BroadCastAbstract
 {
