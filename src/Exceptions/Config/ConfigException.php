@@ -6,7 +6,9 @@
  * Time: 20:34
  */
 
-namespace Zwei\Kafka\Exceptions;
+namespace Zwei\Kafka\Exceptions\Config;
+
+use Zwei\Kafka\Exceptions\BaseException;
 
 /**
  * Created by PhpStorm.
@@ -18,7 +20,7 @@ namespace Zwei\Kafka\Exceptions;
  * 配置异常
  *
  * Class ConfigException
- * @package Zwei\Kafka\Exceptions
+ * @package Zwei\Kafka\Exceptions\Config
  */
 class ConfigException extends BaseException
 {

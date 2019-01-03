@@ -1,5 +1,5 @@
 <?php
-namespace Zwei\Kafka\Exceptions;
+namespace Zwei\Kafka\Exceptions\Config;
 
 /**
  * Created by PhpStorm.
@@ -10,7 +10,7 @@ namespace Zwei\Kafka\Exceptions;
  *
  * 消费者配置异常
  * Class ConsumerConfigException
- * @package Zwei\Kafka\Exceptions
+ * @package Zwei\Kafka\Exceptions\Config
  */
 class ConsumerConfigException extends ConfigException
 {

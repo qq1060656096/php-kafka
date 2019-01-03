@@ -1,5 +1,5 @@
 <?php
-namespace Zwei\Kafka\Exceptions;
+namespace Zwei\Kafka\Exceptions\Config;
 
 /**
  * Created by PhpStorm.
@@ -11,7 +11,7 @@ namespace Zwei\Kafka\Exceptions;
  * 生产者配置异常
  *
  * Class ProducerConfigException
- * @package Zwei\Kafka\Exceptions
+ * @package Zwei\Kafka\Exceptions\Config
  */
 class ProducerConfigException extends ConfigException
 {
