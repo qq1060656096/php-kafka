@@ -12,6 +12,7 @@ use Illuminate\Config\Repository;
 use RdKafka\Conf;
 use RdKafka\TopicConf;
 use RdKafka\KafkaConsumer;
+use Zwei\Kafka\Config\BroadCastConfig;
 use Zwei\Kafka\Config\KafkaConfig;
 use Zwei\Kafka\Exceptions\Config\ConsumerConfigException;
 use Zwei\Kafka\Exceptions\Consumer\ConsumerEventNotFoundException;
@@ -117,19 +118,11 @@ class ConsumerAbstract
     /**
      * 构造方法初始化
      *
-     * ProducerHelper constructor.
-     * @param string $consumerName 消费者名
-     * @param string $brokerList kafka broker列表
-     * @param array $topicList 生成者 kafka 主题列表
-     * @param array $options kafka 配置选项
-     */
-    /**
-     * 构造方法初始化
-     *
      * ConsumerAbstract constructor.
-     * @param string $name 消费者名
-     * @param string $brokerList broker列表
-     * @param array $rawConfig 消费者配置
+     * @param $name
+     * @param $brokerList
+     * @param array $rawConfig
+     * @throws ConsumerConfigException
      */
     public function __construct($name, $brokerList, array $rawConfig)
     {
@@ -157,6 +150,7 @@ class ConsumerAbstract
 
         $this->setTopicList($this->getRawConfig(self::CONFIG_KEY_TOPICS));
         $this->events       = $this->getRawConfig(self::CONFIG_KEY_EVENTS);
+        $this->broadcast
 
     }
 
@@ -302,8 +296,15 @@ class ConsumerAbstract
 
     }
 
-    protected function setBroadcast(array $b)
-    {}
+    protected function setBroadcast()
+    {
+        $broadcast = $this->getRawConfig(self::CONFIG_KEY_BROADCAST);
+        if ($broadcast) {
+            $config = BroadCastConfig::getValue($broadcast);
+
+        }
+
+    }
 
     /**
      * 设置 kafka 主题列表

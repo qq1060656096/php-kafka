@@ -8,7 +8,9 @@
 namespace Zwei\Kafka\Event;
 
 
+use Zwei\Kafka\Config\BroadCastConfig;
 use Zwei\Kafka\Config\ProducerConfig;
+use Zwei\Kafka\Consumer\BroadCast\BroadCastAbstract;
 use Zwei\Kafka\Producer\ProducerAbstract;
 
 /**
@@ -61,6 +63,28 @@ class Event
         }
         $config     = new ProducerConfig();
         $obj        = new Producer($config->get()->all());
+        static::setInstance($instanceName, $obj);
+        return $obj->getInstance($name);
+    }
+
+    /**
+     * 获取广播实例
+     *
+     * @param string $name 消费者
+     * @return BroadCastAbstract
+     * @throws \Zwei\Kafka\Exceptions\ConfigException
+     * @throws \Zwei\Kafka\Exceptions\Broad
+     */
+    public static function getBroadCast($name)
+    {
+        $instanceName = 'broadcast';
+        /* @var $obj BroadCastAbstract */
+        $obj = static::getInstance($instanceName);
+        if ($obj) {
+            return $obj->getInstance($name);
+        }
+        $config     = new BroadCastConfig();
+        $obj        = new BroadCast($config->get()->all());
         static::setInstance($instanceName, $obj);
         return $obj->getInstance($name);
     }

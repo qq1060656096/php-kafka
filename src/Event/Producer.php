@@ -10,8 +10,8 @@ namespace Zwei\Kafka\Event;
 
 
 use Zwei\Kafka\Config\ClusterConfig;
-use Zwei\Kafka\Exceptions\ConfigException;
-use Zwei\Kafka\Exceptions\ProducerConfigException;
+use Zwei\Kafka\Exceptions\Config\ConfigException;
+use Zwei\Kafka\Exceptions\Config\ProducerConfigException;
 use Zwei\Kafka\Producer\ProducerAbstract;
 
 

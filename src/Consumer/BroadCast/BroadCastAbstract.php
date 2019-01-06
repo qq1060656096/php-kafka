@@ -190,7 +190,7 @@ abstract class BroadCastAbstract
         }
         $typesArr = $this->getAllType();
         unset($typesArr[self::TYPE_ALL]);
-        if (!is_array($type, $typesArr)) {
+        if (!in_array($type, $typesArr)) {
             throw new BroadCastConfigException(sprintf('broadcast type config must in (%s) list', implode(',', $this->getAllType())));
         }
         $broadCastEventKey = $this->getBroadCastEventKey($event, $type);
@@ -199,6 +199,7 @@ abstract class BroadCastAbstract
         if ($eventKey === $broadCastEventKey) {
             throw new RepeaTBroadCastEventException(sprintf('broadcast Repeated broadcast event key(%s)',  $eventKey));
         }
+        $event[EventHelper::KEY_EVENT_KEY] = $broadCastEventKey;
         // 广播事件
         Event::getProducer($producerName)->sendMessage([$topicName], $event);
         return true;

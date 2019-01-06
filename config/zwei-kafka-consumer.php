@@ -17,17 +17,7 @@ return [
         ],
         'timeout-ms' => 3000,// 消费者超时时间
         'client-ids' => "",
-        'broadcast' => [// 事件广播配置
-            'enabled'   => true, // 是否广播: true -> 广播, false -> 不广播
-            'type'      => 'origin', // 广播类型: origin -> 使用当前消费事件的生产者和主题广播, target -> 广播到指定的生产者的指定主题发送到target生产者主题)
-            'target'    => [// 广播到指定生产者主题: 配置了广播类型 type=target才生效
-                'producer'  => '', // 生产者名: 请看zwei-kafka-producer.php配置文件
-                'topic'     => '', // 广播到那个主题
-            ],
-            'allow'     => [// 广播方式: all -> 所有事件都广播, success -> 成功事件才广播, fail -> 失败事件才广播, exception-> 异常事件广播
-                'all', 'success', 'fail', 'exception',
-            ],
-        ],
+        'broadcast' => 'v0_b_default_common_target',
         'events'    => [
             // 事件名 => 事件回调函数(必须是静态方法)
             // 初始化事件 CRM_ZNTK_INIT
