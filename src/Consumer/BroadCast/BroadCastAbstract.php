@@ -9,9 +9,11 @@
 namespace Zwei\Kafka\Consumer\BroadCast;
 
 
-use Zwei\Kafka\Event;
+use Illuminate\Config\Repository;
+use Zwei\Kafka\Event\Event;
 use Zwei\Kafka\Event\EventHelper;
 use Zwei\Kafka\Exceptions\Config\BroadCastConfigException;
+use Zwei\Kafka\Exceptions\Consumer\BroadCast\RepeaTBroadCastEventException;
 
 /**
  * 广播抽象类
@@ -128,7 +130,7 @@ abstract class BroadCastAbstract
     public function getConfig($key, $defaultValue = null)
     {
         $value = $this->config->get($key, $defaultValue);
-        if ($value !== null) {
+        if ($value !== null && $value !== '') {
             return $value;
         }
         throw new BroadCastConfigException(sprintf('broadcast "%s" key not config', $key));
@@ -141,7 +143,7 @@ abstract class BroadCastAbstract
      */
     public function isEnabled()
     {
-        return $this->isForward;
+        return $this->enabled;
     }
 
     /**
@@ -162,7 +164,9 @@ abstract class BroadCastAbstract
     {
         // 广播后缀
         $broadCastSuffix = strtoupper($type);
-        $broadCastEventKey = $event[EventHelper::KEY_EVENT_KEY].'_'.$broadCastSuffix;
+        $eventKey = $event[EventHelper::KEY_EVENT_KEY];
+        $arr = explode($broadCastSuffix, $eventKey);
+        $broadCastEventKey = $arr[0].'_'.$broadCastSuffix;
         return $broadCastEventKey;
     }
 
@@ -174,6 +178,7 @@ abstract class BroadCastAbstract
      * @param string $topicName
      * @return bool
      * @throws BroadCastConfigException
+     * @throws RepeaTBroadCastEventException
      */
     public function broadCastEvent(array $event, $type, $producerName, $topicName)
     {
@@ -183,26 +188,19 @@ abstract class BroadCastAbstract
         if (!$this->isEnabled()) {
             return false;
         }
-        if (!is_array($type, $this->getAllType())) {
+        $typesArr = $this->getAllType();
+        unset($typesArr[self::TYPE_ALL]);
+        if (!is_array($type, $typesArr)) {
             throw new BroadCastConfigException(sprintf('broadcast type config must in (%s) list', implode(',', $this->getAllType())));
         }
         $broadCastEventKey = $this->getBroadCastEventKey($event, $type);
-        // 广播所有
-        $isBroadCastAll = $type === self::TYPE_ALL ? true : false;
-        if ($isBroadCastAll) {
-            return true;
+        $eventKey = $event[EventHelper::KEY_EVENT_KEY];
+        // 广播事件key和和当前事件key一致就不在广播
+        if ($eventKey === $broadCastEventKey) {
+            throw new RepeaTBroadCastEventException(sprintf('broadcast Repeated broadcast event key(%s)',  $eventKey));
         }
-        switch (true) {
-            case self::TYPE_SUCCESS === $type://
-
-                break;
-            case self::TYPE_FAIL === $type:// 失败广播
-                break;
-            case self::TYPE_EXCEPTION === $type:// 异常广播
-                break;
-            default:
-                break;
-        }
+        // 广播事件
+        Event::getProducer($producerName)->sendMessage([$topicName], $event);
         return true;
     }
 
@@ -214,10 +212,17 @@ abstract class BroadCastAbstract
      */
     protected final function setType(array $types)
     {
-        if (!empty($types)) {
-            throw new BroadCastConfigException(sprintf('broadcast type key  value config must in (%s) list', implode(',', $this->getAllType())));
+        if (empty($types)) {
+            throw new BroadCastConfigException(sprintf('broadcast type key value config must in (%s) list', implode(',', $this->getAllType())));
+        }
+        $allTypes = $this->getAllType();
+        foreach ($types as $rowType) {
+            if (!isset($allTypes[$rowType])) {
+                throw new BroadCastConfigException(sprintf('broadcast type key  value config must in (%s) list', implode(',', $this->getAllType())));
+            }
         }
         $this->type = array_combine(array_keys($types), array_values($types));
+
     }
 
     /**

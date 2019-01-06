@@ -80,7 +80,6 @@ abstract class ForwardAbstract
     {
         $this->enabled  = $this->getConfig(self::CONFIG_KEY_ENABLED, $this->enabled) ? true : false;
         $this->class    = $this->getConfig(self::CONFIG_KEY_CLASS);
-        $this->setType($this->getConfig(self::CONFIG_KEY_TYPE));
     }
 
     /**
@@ -97,7 +96,7 @@ abstract class ForwardAbstract
         if ($value !== null) {
             return $value;
         }
-        throw new ForwardConfigException(sprintf('broadcast "%s" key not config', $key));
+        throw new ForwardConfigException(sprintf('forward "%s" key not config', $key));
     }
 
     /**
@@ -107,7 +106,7 @@ abstract class ForwardAbstract
      */
     public function isEnabled()
     {
-        return $this->isForward;
+        return $this->enabled;
     }
 
     /**

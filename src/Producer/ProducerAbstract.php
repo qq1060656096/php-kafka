@@ -13,6 +13,7 @@ use RdKafka\Producer;
 use RdKafka\ProducerTopic;
 use RdKafka\Conf;
 use Zwei\Kafka\Config\KafkaConfig;
+use Zwei\Kafka\Event\EventHelper;
 use Zwei\Kafka\Exceptions\ProducerConfigException;
 
 /**
@@ -71,10 +72,23 @@ class ProducerAbstract implements ProducerInsterface
      */
     public function __construct($producerName, $brokerList, $topicList, array $options = [])
     {
+        $this->init($producerName, $brokerList, $topicList, $options);
+    }
+
+    /**
+     * 初始化
+     *
+     * @param string $producerName 生产者名
+     * @param string $brokerList kafka broker列表
+     * @param array $topicList 生成者 kafka 主题列表
+     * @param array $options kafka 配置选项
+     */
+    protected final function init($producerName, $brokerList, $topicList, array $options = [])
+    {
         $this->producerName = $producerName;
         $this->brokerList   = $brokerList;
-        $kafkaConfig        = new KafkaConfig($options);
-        $this->conf         = $kafkaConfig->getNewConf();
+        $kafkaConfig        = new KafkaConfig();
+        $this->conf         = $kafkaConfig->getNewConf($options);
 
         $this->setTopicList($topicList);
     }
@@ -83,7 +97,7 @@ class ProducerAbstract implements ProducerInsterface
      * 获取生产者
      * @return Producer
      */
-    public function getProducer()
+    public final function getProducer()
     {
         if ($this->producer !== null) {
             return $this->producer;
@@ -96,7 +110,7 @@ class ProducerAbstract implements ProducerInsterface
      * 获取新的生产者
      * @return Producer
      */
-    public function getNewProducer()
+    public final function getNewProducer()
     {
         $producer = new Producer($this->conf);
         $producer->addBrokers($this->brokerList);
@@ -109,7 +123,7 @@ class ProducerAbstract implements ProducerInsterface
      * @param string $topic 主题名
      * @return ProducerTopic 消费者主题实例
      */
-    public function geProducerTopic($topic)
+    public final function geProducerTopic($topic)
     {
         if (isset($this->producerTopic[$topic])) {
             return $this->producerTopic[$topic];
@@ -125,7 +139,7 @@ class ProducerAbstract implements ProducerInsterface
      * @param string $topic 主题名
      * @param ProducerTopic $producerTopic
      */
-    protected function setProducerTopic($topic, ProducerTopic $producerTopic)
+    protected final function setProducerTopic($topic, ProducerTopic $producerTopic)
     {
         $this->producerTopic[$topic] = $producerTopic;
     }
@@ -135,7 +149,7 @@ class ProducerAbstract implements ProducerInsterface
      * @param string $topic 主题名
      * @return ProducerTopic 消费者主题实例
      */
-    public function getProducerNewTopic(Producer $producer, $topic)
+    public final function getProducerNewTopic(Producer $producer, $topic)
     {
         return $producer->newTopic($topic);
     }
@@ -160,6 +174,7 @@ class ProducerAbstract implements ProducerInsterface
                 $message['additional']['producers'][] = [
                     'producer'  => $this->producerName,
                     'topic'     => $topic,
+                    'partition' => $partition,
                 ];
                 $message = json_encode($message);
             }
@@ -181,10 +196,10 @@ class ProducerAbstract implements ProducerInsterface
      */
     public function sendEvent($eventKey, array $eventData, array $topicList, $ip = null, $key = null, $partition = RD_KAFKA_PARTITION_UA, $msgflags = 0)
     {
-        $ip = $ip === null ? self::getClientIp() : $ip;
+        $ip = $ip === null ? EventHelper::getClientIp() : $ip;
         $key        = '';
         $event      = [
-            'id'        => self::getEventId($ip),
+            'id'        => EventHelper::getEventId($ip),
             'eventKey'  => $eventKey,
             'data'      => $eventData,
             'time'      => time(),
@@ -194,56 +209,7 @@ class ProducerAbstract implements ProducerInsterface
         $this->sendMessage($topicList, $event, $key, $partition, $msgflags);
     }
 
-    /**
-     * 获取事件id
-     * @param string $ip ip地址
-     * @return string
-     */
-    public static function getEventId($ip = '0.0.0.0')
-    {
-        static $count;
-        $count ++;
-        list($usec, ) = explode(" ", microtime());
-        $idArr = [
-            date('YmdHis'),
-            $usec,
-            $ip,
-            getmypid(),
-            $count
-        ];
-        $id = implode('-', $idArr);
-        return $id;
-    }
 
-    /**
-     * 获取客户端IP地址
-     * @param integer $type 返回类型 0 返回IP地址 1 返回IPV4地址数字
-     * @param boolean $adv 是否进行高级模式获取（有可能被伪装）
-     * @return mixed
-     */
-    public static function getClientIp($type = 0,$adv=true) {
-        $type       =  $type ? 1 : 0;
-        static $ip  =   NULL;
-        if ($ip !== NULL) return $ip[$type];
-        if($adv){
-            if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-                $arr    =   explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
-                $pos    =   array_search('unknown',$arr);
-                if(false !== $pos) unset($arr[$pos]);
-                $ip     =   trim($arr[0]);
-            }elseif (isset($_SERVER['HTTP_CLIENT_IP'])) {
-                $ip     =   $_SERVER['HTTP_CLIENT_IP'];
-            }elseif (isset($_SERVER['REMOTE_ADDR'])) {
-                $ip     =   $_SERVER['REMOTE_ADDR'];
-            }
-        }elseif (isset($_SERVER['REMOTE_ADDR'])) {
-            $ip     =   $_SERVER['REMOTE_ADDR'];
-        }
-        // IP地址合法验证
-        $long = sprintf("%u",ip2long($ip));
-        $ip   = $long ? array($ip, $long) : array('0.0.0.0', 0);
-        return $ip[$type];
-    }
 
     /**
      * 检测topic是佛合法

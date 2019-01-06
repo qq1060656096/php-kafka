@@ -27,19 +27,17 @@ class OriginBroadCastTest extends TestCase
         $obj = new OriginBroadCast($name, $config);
         $this->assertEquals($name, $obj->getName());
         $this->assertTrue($obj->isEnabled());
-        var_dump($obj);
     }
 
     /**
      * 测试正确配置
      *
      */
-    public function testGoodConfig()
+    public function testGoodConfig2()
     {
         list($name, $config) = $this->goodConfig();
         $obj = new OriginBroadCast($name, $config);
         $this->assertEquals('goodConfig', $obj->getName());
         $this->assertFalse($obj->isEnabled());
-        $this->assertEquals([], array_diff($config, $obj->getRawConfig()->all()));
     }
 }

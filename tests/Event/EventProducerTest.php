@@ -5,9 +5,11 @@
  * Date: 2018-12-27
  * Time: 23:51
  */
-namespace Zwei\Kafka\Tests;
+namespace Zwei\Kafka\Tests\Event;
 
-use Zwei\Kafka\Event;
+
+use Zwei\Kafka\Event\Event;
+use Zwei\Kafka\Tests\TestCase;
 
 /**
  * 测试事件

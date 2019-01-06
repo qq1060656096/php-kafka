@@ -6,7 +6,7 @@
  * Time: 16:54
  */
 
-namespace Zwei\Kafka\Events\Consumer;
+namespace Zwei\Kafka\Event;
 
 
 use Zwei\Kafka\CommonBaseAbstract;

@@ -15,19 +15,19 @@ return [
         'options'   => [// kafka配置选项
             "offset.store.method" => "broker",// offset保存在broker中
         ],
-        'group-id'  => "consumer_group_id",// 分组id
+        'timeout-ms' => 3000,// 消费者超时时间
         'client-ids' => "",
-        'forward'   => [
-            'producer'  => '',// 转发到那个生产者,
-            'topic'     => '',// 转发到生产者所在集群的那个topic
-        ],// 是否转发某个生产者
-        'broadcast' => [// 事件是否广播
-            'producer'  => '',// 广播到那个生产者,
-            'topic'     => '',// 广播到那个topic
-            'success',
-            'fail',
-            'exception',//
-        ],// all -> 所有事件都广播, success -> 成功事件才广播, fail -> 失败事件才广播, exception-> 异常事件广播
+        'broadcast' => [// 事件广播配置
+            'enabled'   => true, // 是否广播: true -> 广播, false -> 不广播
+            'type'      => 'origin', // 广播类型: origin -> 使用当前消费事件的生产者和主题广播, target -> 广播到指定的生产者的指定主题发送到target生产者主题)
+            'target'    => [// 广播到指定生产者主题: 配置了广播类型 type=target才生效
+                'producer'  => '', // 生产者名: 请看zwei-kafka-producer.php配置文件
+                'topic'     => '', // 广播到那个主题
+            ],
+            'allow'     => [// 广播方式: all -> 所有事件都广播, success -> 成功事件才广播, fail -> 失败事件才广播, exception-> 异常事件广播
+                'all', 'success', 'fail', 'exception',
+            ],
+        ],
         'events'    => [
             // 事件名 => 事件回调函数(必须是静态方法)
             // 初始化事件 CRM_ZNTK_INIT

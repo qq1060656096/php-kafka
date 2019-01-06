@@ -32,7 +32,6 @@ class TargetBroadCastTest extends TestCase
         $obj = new TargetBroadCast($name, $config);
         $this->assertEquals($name, $obj->getName());
         $this->assertTrue($obj->isEnabled());
-        var_dump($obj);
     }
 
     /**
@@ -45,6 +44,5 @@ class TargetBroadCastTest extends TestCase
         $obj = new TargetBroadCast($name, $config);
         $this->assertEquals('goodConfig', $obj->getName());
         $this->assertTrue($obj->isEnabled());
-        $this->assertEquals([], array_diff($config, $obj->getRawConfig()->all()));
     }
 }

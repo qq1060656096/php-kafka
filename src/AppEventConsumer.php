@@ -9,7 +9,7 @@
 
 namespace Zwei\Kafka;
 
-use Zwei\Kafka\Exceptions\EventNotFoundConfigException;
+use Zwei\Kafka\Exceptions\ConsumerEventException;
 use Zwei\Kafka\Helper\ConsumerHelper;
 
 
@@ -161,13 +161,13 @@ str;
      *
      * @param array $event
      * @return bool|mixed 失败false, 否则成功
-     * @throws EventNotFoundConfigException 事件没有配置抛出异常
+     * @throws ConsumerEventException 事件没有配置抛出异常
      */
     protected function executeEvent(array $event) {
         $eventKey = $event['eventKey'];
         // 没有这个事件配置直接成功
         if (!isset($this->eventListConfig[$eventKey])) {
-            throw new EventNotFoundConfigException('Event not found config');
+            throw new ConsumerEventException('Event not found config');
         }
         $staticFunc = $this->eventListConfig[$eventKey];
         return call_user_func_array($staticFunc, [$event]);

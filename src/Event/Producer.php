@@ -6,12 +6,10 @@
  * Time: 16:54
  */
 
-namespace Zwei\Kafka;
+namespace Zwei\Kafka\Event;
 
 
-use Zwei\Kafka\CommonBaseAbstract;
 use Zwei\Kafka\Config\ClusterConfig;
-use Zwei\Kafka\Exceptions\BaseException;
 use Zwei\Kafka\Exceptions\ConfigException;
 use Zwei\Kafka\Exceptions\ProducerConfigException;
 use Zwei\Kafka\Producer\ProducerAbstract;
@@ -21,7 +19,7 @@ use Zwei\Kafka\Producer\ProducerAbstract;
  * 事件生产者
  *
  * Class Producer
- * @package Zwei\Kafka
+ * @package Zwei\Kafka\Event
  */
 class Producer extends CommonBaseAbstract
 {
@@ -62,7 +60,7 @@ class Producer extends CommonBaseAbstract
      *
      * @param string $name 生产者名
      * @return ProducerAbstract
-     * @throws ProducerConfigException
+     * @throws \Zwei\Kafka\Exceptions\ClusterConfigException
      */
     public function getNewInstance($name)
     {

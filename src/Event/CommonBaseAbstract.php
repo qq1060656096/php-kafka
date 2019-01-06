@@ -5,10 +5,8 @@
  * Date: 2018-12-26
  * Time: 19:28
  */
-namespace Zwei\Kafka;
+namespace Zwei\Kafka\Event;
 
-
-use Zwei\Kafka\Exceptions\BaseException;
 use Zwei\Kafka\Exceptions\ConfigException;
 
 /**
